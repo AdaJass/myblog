@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>订单请求</title>
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+	<link rel="stylesheet" href="style.css"> 
+	<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<div style="width:350px;margin:30px auto;">
+        <form action="/makeorder" method="post" class='form'>
+        	<div style="font-size: 30px;font-weight: bold;text-align: center;">orders</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-usd" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="money" style="height:45px;border:0;width:297px;"  placeholder="All Money in Dollar" maxlength="5">
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-usd" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="dealmoney" style="height:45px;border:0;width:297px;"  placeholder="Deal Money" maxlength="5">
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-euro" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="symbol" style="height:45px;border:0;width:297px;" placeholder="Order Pair" maxlength="11">
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+
+
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-gbp" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="price" style="height:45px;border:0;width:297px;" placeholder="Order Direct Price">
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-piggy-bank" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="profit" style="height:45px;border:0;width:297px;" placeholder="Order Profit" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-dashboard" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="duration" style="height:45px;border:0;width:297px;" placeholder="Order Total Duration" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-info-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="thebigthing" style="height:45px;border:0;width:297px;" placeholder="The Event That Rely On" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="isworking" style="height:45px;border:0;width:297px;" placeholder="Is It The Fluctuation Time Out?" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="isinrange" style="height:45px;border:0;width:297px;" placeholder="Is It The Price Will Go On?" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="isthinkover" style="height:45px;border:0;width:297px;" placeholder="Are You Think It Over?" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>			
+			<div style="height:90px;line-height:18px;background: #fff;width:350px;padding-left:0px;margin-top: 32px;position: relative;">
+				<!-- <span class="glyphicon glyphicon-thumbs-up" style="color: #999;"></span>&nbsp;&nbsp;&nbsp; -->
+				<textarea name="threeyesreason" style="height:90px;border:0;width:350px;" placeholder="List 3 Reasons Make You Said Yes" ></textarea>
+				<!-- <span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span> -->
+			</div>
+			<div style="height:90px;line-height:18px;background: #fff;width:350px;padding-left:0px;margin-top: 32px;position: relative;">
+				<!-- <span class="glyphicon glyphicon-thumbs-down" style="color: #999;"></span>&nbsp;&nbsp;&nbsp; -->
+				<textarea name="threenoreason"  style="height:90px;border:0;width:350px;" placeholder="Try 3 Reasons Will Deny Youself" ></textarea>
+				<!-- <span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span> -->
+			</div>
+			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
+				<span class="glyphicon glyphicon-thumbs-up" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
+				<input type="text" name="confidence" style="height:45px;border:0;width:297px;" placeholder="Confidence Score" >
+				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
+			</div>
+          	<input type="button" class="button" value="提交订单" style="padding: 10px 20px;border-radius: 5px;margin:30px auto 70px;">
+        </form>
+    </div>
+    <script>
+		$("input").blur(function() {
+			var v=$(this).val();
+			if (v=='') {
+				$(this).prev().css("color","#f00");
+			}else{
+				$(this).prev().css("color","#0EA74A");
+			} 
+		});
+		
+		$('.button').click(function(){		
+			$('form').submit();
+		});
+	</script>
+</body>
+</html>

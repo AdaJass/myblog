@@ -1,0 +1,10 @@
+.button{
+	color:#fff;
+	background:#007eff;border: solid 1px #007eff;
+}
+.button:hover{
+	background:#f00;
+	color:#fff;
+}
+body{ background-color: #E8E8E8; }
+input{outline: none; }
