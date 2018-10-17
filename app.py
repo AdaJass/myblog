@@ -32,8 +32,6 @@ async def confirm_direct(request):
         
 async def parse_chatcontent(request):
     para = request.query
-    print(para)     
-    print(para.get('s')) 
     if para.get('s'):
         with open('./client'+para.get('s'),'r',encoding='utf-8') as f:
             ct = f.read()
@@ -48,7 +46,7 @@ async def parse_chatcontent(request):
 
 app = web.Application()
 app.router.add_get('/showorder', showorder)
-app.router.add_get('/chatcon tent', parse_chatcontent)
+app.router.add_get('/chatcontent', parse_chatcontent)
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/confirm_direct', confirm_direct)

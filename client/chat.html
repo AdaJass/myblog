@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>微聊</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <style>
 		/**重置标签默认样式*/
         * {
@@ -16,7 +16,7 @@
             width: 450px;
             height: 780px;
             background: #eee;
-            margin: 80px auto 0;
+            margin: 5px auto 0;
             position: relative;
             box-shadow: 20px 20px 55px #777;
         }
@@ -121,11 +121,15 @@
             float: right;
             background: #7cfc00;
         }
+        .content li span.span_pangbai { 
+            float: right;
+            background: #e29d07e1;
+        }
     </style>
     <script src="./jquery.min.js"></script>
     <script>
         window.onload = function(){
-            var arrIcon = ['./imgs/myhead.jpg','./imgs/herhead.jpg'];
+            var arrIcon = ['./imgs/herhead.jpg','./imgs/myhead.jpg'];
             var num = 0;     //控制头像改变
             var iNow = -1;    //用来累加改变左右浮动
             // var icon = document.getElementById('user_face_icon').getElementsByTagName('img');
@@ -173,7 +177,8 @@
             <span style="float: right;">第二章</span>
         </div>
         <ul class="content">			
-		</ul>        
+        </ul>  
+         
     </div>
 </body>
 </html>
