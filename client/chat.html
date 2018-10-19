@@ -15,10 +15,8 @@
         #container {
             width: 450px;
             height: 780px;
-            background: #eee;
             margin: 5px auto 0;
             position: relative;
-            box-shadow: 20px 20px 55px #777;
         }
         .header {
             background: #000;
@@ -27,42 +25,8 @@
             line-height: 34px;
             font-size: 20px;
             padding: 0 10px;
-        }
-        .footer {
-            width: 430px;
-            height: 50px;
-            background: #666;
-            position: absolute;
-            bottom: 0;
-            padding: 10px;
-        }
-        .footer input {
-            width: 275px;
-            height: 45px;
-            outline: none;
-            font-size: 20px;
-            text-indent: 10px;
-            position: absolute;
-            border-radius: 6px;
-            right: 80px;
-        }
-        .footer span {
-            display: inline-block;
-            width: 62px;
-            height: 48px;
-            background: #ccc;
-            font-weight: 900;
-            line-height: 45px;
-            cursor: pointer;
-            text-align: center;
-            position: absolute;
-            right: 10px;
-            border-radius: 6px;
-        }
-        .footer span:hover {
-            color: #fff;
-            background: #999;
-        }
+        }     
+        
         #user_face_icon {
             display: inline-block;
             background: red;
@@ -125,6 +89,40 @@
             float: right;
             background: #e29d07e1;
         }
+
+        .comment{
+            font-size: 10px;            
+            overflow: auto;
+            width: 430px;
+            margin: 10px auto 0;
+            padding: 5px;
+        }
+        .comment li{
+            margin: 20px 0 20px;
+            border: #999;
+        }
+        .comment li img {
+            width: 30px;
+            height: 30px;
+            float: left;
+        }
+        .comment li p{
+            font-size: 10px;
+            float: left;
+            margin-left: 10px;
+        }
+        .comment li a{
+            float: right;
+            margin-right: 30px;
+        }
+        .comment li span{
+            padding: 6px;
+            margin-left: 10px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            float: right;            
+            max-width: 380px;
+        }
     </style>
     <script src="./jquery.min.js"></script>
     <script>
@@ -176,9 +174,25 @@
             <span style="float: left;">君与君思君与君</span>
             <span style="float: right;">第二章</span>
         </div>
-        <ul class="content">			
-        </ul>  
+        <ul class="content"></ul> 
+
+        
          
     </div>
+    <ul class="comment">
+        <li>
+            <img src="./imgs/herhead.jpg">
+            <p>小明</p>
+            <a>vote</a>
+            <span>jjjj在 HTML5 中可以放心使用 <b> 和 <i> 标签。<b> 用于高亮单词或短语，不带有任何着重的意味；而 <i> 标签主要用于发言、技术词汇等。jfdaskjj</span>
+        </li>
+        <li>
+            <img src="./imgs/herhead.jpg">
+            <p>小B</p>
+            <a>vote</a>
+            <span>jjjj在 HTML5 中可以放心使用 <b> 和 <i> 标签。<b> 用于高亮单词或短语，不带有任何着重的意味；而 <i> 标签主要用于发言、技术词汇等。jfdaskjj</span>
+        </li>
+        
+    </ul>
 </body>
 </html>
