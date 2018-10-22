@@ -1,4 +1,6 @@
 from aiohttp import web
+import aiohttp_jinja2
+from aiohttp_jinja2 import jinja2
 
 orderstruct={}
 async def makeorder(request):
@@ -19,6 +21,10 @@ async def showorder(request):
     else:
         return web.Response(text="nonononono!")
         pass
+
+@aiohttp_jinja2.template('tmpl.jinja2')
+async def handler(request):
+    return {'name': 'Andrew', 'surname': 'Svetlov'}
 
 async def confirm_direct(request):
     para = await request.post()
@@ -45,8 +51,11 @@ async def parse_chatcontent(request):
         pass
 
 app = web.Application()
+aiohttp_jinja2.setup(app,
+    loader=jinja2.FileSystemLoader('/path/to/templates/folder'))
 app.router.add_get('/showorder', showorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
+app.router.add_get('/chat', chatpage)
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/confirm_direct', confirm_direct)
