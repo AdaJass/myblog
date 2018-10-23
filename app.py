@@ -22,9 +22,13 @@ async def showorder(request):
         return web.Response(text="nonononono!")
         pass
 
-@aiohttp_jinja2.template('tmpl.jinja2')
-async def handler(request):
-    return {'name': 'Andrew', 'surname': 'Svetlov'}
+@aiohttp_jinja2.template('chat.jinja2')
+async def chatpage(request):
+    para = request.query
+    data = {}
+    if para.get('chapter'):
+        data['chapter'] = para.get('chapter')
+    return data
 
 async def confirm_direct(request):
     para = await request.post()
@@ -39,23 +43,26 @@ async def confirm_direct(request):
 async def parse_chatcontent(request):
     para = request.query
     if para.get('s'):
-        with open('./client'+para.get('s'),'r',encoding='utf-8') as f:
-            ct = f.read()
-            # kw1=para.get('kw1')
-            # kw2=para.get('kw2')
-            ct= ct.replace('\n\n','|||')
-            ct = ct.replace('\n','')
-        return web.Response(text=ct)
+        try:
+            with open('./client'+para.get('s'),'r',encoding='utf-8') as f:
+                ct = f.read()
+                # kw1=para.get('kw1')
+                # kw2=para.get('kw2')
+                ct= ct.replace('\n\n','|||')
+                ct = ct.replace('\n','')
+            return web.Response(text=ct)
+        except FileNotFoundError:
+            return web.Response(text="章节不存在！")        
     else:
         return web.Response(text="None")
         pass
 
 app = web.Application()
 aiohttp_jinja2.setup(app,
-    loader=jinja2.FileSystemLoader('/path/to/templates/folder'))
+    loader=jinja2.FileSystemLoader('./client'))
 app.router.add_get('/showorder', showorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
-app.router.add_get('/chat', chatpage)
+app.router.add_get('/s/chat', chatpage)
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/confirm_direct', confirm_direct)
