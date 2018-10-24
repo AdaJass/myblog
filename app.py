@@ -1,17 +1,75 @@
 from aiohttp import web
 import aiohttp_jinja2
 from aiohttp_jinja2 import jinja2
+from datetime import datetime
+from datetime import timedelta
 
-orderstruct={}
+"""
+orderstruct = {   #json cell data deliver to mt4
+    orderid: 112
+    pair: EURUSD
+    lots: 1.0
+    direction: 1/-1
+    type: pending
+    uppending: 1.115  #price upper will deal
+    downpending: 1.114   #price lower will deal
+    maxstoploss: 1.112
+    tolerancestoploss: 1.114
+    tolerancestoptime: 2h
+    maxprofit: 1.1123
+    conservativeprofit: 1.1123   #when the profit up to a top level, profit drop down after the next four hour, it will be actived
+    orderlasttime: 24h
+    previousordertime: 
+    equitywhenstart:
+    previousorderid:
+    conservativetime:
+}
+
+orderinfo={
+    pair:
+    type: pending/directing
+    direction:
+    price:
+    orderopenprice:
+    orderopentime:
+    orderid:
+}
+"""
+OrderList = []
+LastDealTime = datetime.today()
+ProfitDoubleTime = datetime.today()-timedelta(8)
+EquityCutOffTime = datetime.today()-timedelta(8)
+AccountEquity = 0.0
+LastOrderId = 0
+
 async def makeorder(request):
     para = await request.post()
-    global orderstruct
-    if orderstruct:
-        return web.Response(text="nonononono!")
-    orderstruct = dict(para)   
+    global OrderList
+    orderstruct = dict(para) 
+    orderstruct['previousordertime'] = LastDealTime
+    orderstruct['equitywhenstart'] = AccountEquity
+    orderstruct['previousorderid'] = LastOrderId
+    pairlist=[]
+    pairlist.append(orderstruct.get('pair'))
+    for order in OrderList:
+        if order.get('pair') not in pairlist:
+            pairlist.append(order.get('pair'))
+    if len(pairlist) > 2:
+        return web.Response(text="too many intention! deal not allow!!!")
+    timenow = datetime.today()
+    if timenow - ProfitDoubleTime < timedelta(7) or timenow - ProfitDoubleTime < timedelta(7):
+        return web.Response(text="your mood are not good enough to deal! please calm down several days!")
+    orderstruct['orderid'] = len(OrderList)+1
+    OrderList.append(orderstruct)
     print(orderstruct)
     print(para)
     return web.HTTPFound('/showorder')
+
+async def deleteorder(request):
+    para = await request.post()
+    infoList = dict(para) 
+    # for orderstruct in OrderList:
+
 
 async def showorder(request):
     print('showorder')
@@ -62,7 +120,7 @@ aiohttp_jinja2.setup(app,
     loader=jinja2.FileSystemLoader('./client'))
 app.router.add_get('/showorder', showorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
-app.router.add_get('/s/chat', chatpage)
+app.router.add_get('/s/chat', chatpage) 
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/confirm_direct', confirm_direct)
