@@ -11,10 +11,10 @@ orderstruct = {   #json cell data deliver to mt4
     lots: 1.0
     direction: 1/-1
     type: pending
-    uppending: 1.115  #price upper will deal
-    downpending: 1.114   #price lower will deal
-    maxstoploss: 1.112
-    tolerancestoploss: 1.114
+    uppending: 1.1115  #price upper will deal
+    downpending: 1.1114   #price lower will deal
+    maxstoploss: 20 Points
+    tolerancestoploss: 1.1114
     tolerancestoptime: 2h
     maxprofit: 1.1123
     conservativeprofit: 1.1123   #when the profit up to a top level, profit drop down after the next four hour, it will be actived
@@ -46,7 +46,7 @@ async def makeorder(request):
     para = await request.post()
     global OrderList
     orderstruct = dict(para) 
-    orderstruct['previousordertime'] = LastDealTime
+    orderstruct['previousordertime'] = datetime.strftime(LastDealTime,'%Y-%m-%d %H:%M:%S')
     orderstruct['equitywhenstart'] = AccountEquity
     orderstruct['previousorderid'] = LastOrderId
     pairlist=[]
@@ -74,10 +74,10 @@ async def deleteorder(request):
 async def showorder(request):
     print('showorder')
     global orderstruct    
-    if orderstruct:        
-        return web.json_response(orderstruct)
+    if len(OrderList)>0:        
+        return web.json_response(OrderList)
     else:
-        return web.Response(text="nonononono!")
+        return web.Response(text="no")
         pass
 
 @aiohttp_jinja2.template('chat.jinja2')
