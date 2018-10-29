@@ -14,9 +14,30 @@ $(function() {
 	$("#demo4 .ratyli").ratyli();
 
 	// Font Awesome Signs
-	$("#demo5 .ratyli").ratyli({
+	$("#kline .ratyli").ratyli({
 		full:"<i class='fa fa-thumbs-up'></i>",
 		empty:"<i class='fa fa-thumbs-o-up'></i>",
+		onRated:function(value,init){
+			// rating callback
+			if(!init) $('#ratekline').val(value);  // prevent run at init
+		},
+	});
+
+	$("#direction .ratyli").ratyli({
+		full:"<i class='fa fa-thumbs-up'></i>",
+		empty:"<i class='fa fa-thumbs-o-up'></i>",
+		onRated:function(value,init){
+			// rating callback
+			if(!init) $('#ratedirection').val(value);  // prevent run at init
+		},
+	});
+	$("#profitability .ratyli").ratyli({
+		full:"<i class='fa fa-thumbs-up'></i>",
+		empty:"<i class='fa fa-thumbs-o-up'></i>",
+		onRated:function(value,init){
+			// rating callback
+			if(!init) $('#rateprofitable').val(value);  // prevent run at init
+		},
 	});
 
 	// Rated Callback

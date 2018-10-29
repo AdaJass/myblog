@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>订单请求</title>
-	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css"> 
 	<link rel="stylesheet" type="text/css" href="css/demo.css" />
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'>
-	<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+	<script src="js/jquery.min.js"></script>
 	<style>
 		.button{
 			color:#fff;
@@ -179,16 +179,26 @@
 				<textarea name="threenoreason"  style="height:90px;border:0;width:350px;" placeholder="Try 3 Reasons Will Deny Youself" ></textarea>
 				<!-- <span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span> -->
 			</div>
-			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
-				<span class="glyphicon glyphicon-thumbs-up" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="confidence" style="height:45px;border:0;width:297px;" placeholder="Confidence Score" >
-				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
-			</div>
-			  <input type="button" class="button" value="提交订单" style="padding: 10px 20px;border-radius: 5px;margin:30px auto 70px;">
-			<div id="demo5" class="demo">
-				<h2>Font Awesome Signs</h2>
+			<input id="ratekline" name="rate_kline" hidden>
+			<input id="ratedirection" name="rate_direction" hidden>
+			<input id="rateprofitable" name="rate_profitable" hidden>
+			
+			<div id="kline" >
+				<h2>K Line Stable</h2>
 				<span class="ratyli"></span>
 			</div>
+			<div id="direction">
+				<h2>Emotion Direction Clearly</h2>
+				<span class="ratyli"></span>
+			</div>
+
+			<div id="profitability" >
+				<h2>Profitability</h2>
+				<span class="ratyli"></span>
+			</div>
+			
+			  <input type="button" class="button" value="提交订单" style="padding: 10px 20px;border-radius: 5px;margin:30px auto 70px;">
+			
         </form>
 	</div>
 
