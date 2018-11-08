@@ -2,6 +2,7 @@ import pymongo
 from pymongo import MongoClient
 __client = MongoClient('mongodb://localhost:27017')
 valid_order =__client.myblog.valid_order
+comments =__client.myblog.comments
 
 if __name__ == '__main__':
     valid_order.insert({'ss':{'sj':9}})
