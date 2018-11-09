@@ -3,7 +3,7 @@ import aiohttp_jinja2
 from aiohttp_jinja2 import jinja2
 from datetime import datetime
 from datetime import timedelta
-
+from mongodb import *
 """
 orderstruct = {   #json cell data deliver to mt4
     orderid: 112
@@ -80,6 +80,14 @@ async def showorder(request):
         return web.Response(text="no")
         pass
 
+async def savecomment(request):
+    para = await request.post()
+    para = dict(para)
+    db_comments.insert(para)
+    print('yes')
+    return web.Response(text="ok")
+
+
 @aiohttp_jinja2.template('chat.jinja2')
 async def chatpage(request):
     para = request.query
@@ -123,6 +131,7 @@ app.router.add_get('/chatcontent', parse_chatcontent)
 app.router.add_get('/s/chat', chatpage) 
 
 app.router.add_post('/makeorder', makeorder)
+app.router.add_post('/savecomment', savecomment)
 app.router.add_post('/confirm_direct', confirm_direct)
 
 app.router.add_static('/s/', path='./client', name='static')
