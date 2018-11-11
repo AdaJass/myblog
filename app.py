@@ -123,12 +123,18 @@ async def parse_chatcontent(request):
         return web.Response(text="None")
         pass
 
+async def fetchcomments(request):
+    comments = list(db_comments.find({'chapter': request.query.get('chapter')}, projection={'_id':False}))
+    return web.json_response(comments)
+
+
 app = web.Application()
 aiohttp_jinja2.setup(app,
     loader=jinja2.FileSystemLoader('./client'))
 app.router.add_get('/showorder', showorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
 app.router.add_get('/s/chat', chatpage) 
+app.router.add_get('/fetchcomments', fetchcomments)
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/savecomment', savecomment)
