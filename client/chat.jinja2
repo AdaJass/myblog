@@ -153,7 +153,21 @@
                         }
                     }
                 }
-            });                                   
+            }); 
+            if($.cookie('name')){
+                
+            }else{
+                $.cookie('name', parseInt(Math.random()*5507), { expires: 1000, path: '/' });
+                $.cookie('pic', parseInt(Math.random()*1630), { expires: 1000, path: '/' });
+            }
+
+            var login_name_id = $.cookie('name');
+            var login_pic_id = $.cookie('pic');
+            $.get('/get_name_pic?name='+login_name_id+'&pic='+login_pic_id,function(data, status){
+                namepic = data.split('|,');
+                login_name = namepic[0];
+                login_pic = namepic[1];
+            });
         });
 
         /////////////////////////////////////////////////

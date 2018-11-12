@@ -4,6 +4,10 @@ from aiohttp_jinja2 import jinja2
 from datetime import datetime
 from datetime import timedelta
 from mongodb import *
+from webname import *
+from head_pic import *
+import random
+
 """
 orderstruct = {   #json cell data deliver to mt4
     orderid: 112
@@ -127,6 +131,16 @@ async def fetchcomments(request):
     comments = list(db_comments.find({'chapter': request.query.get('chapter')}, projection={'_id':False}))
     return web.json_response(comments)
 
+async def id2name_pic(request):
+    para = request.query
+    if para.get('name'):
+        name = web_name_list[int(para.get('name'))]
+        pic = head_pics_list[int(para.get('pic'))]
+    else:
+        name = web_name_list[int(random.randint(0,5507))]
+        pic = head_pics_list[int(random.randint(0,1631))]    
+    return web.Response(text=name+'|,'+pic)
+
 
 app = web.Application()
 aiohttp_jinja2.setup(app,
@@ -135,6 +149,7 @@ app.router.add_get('/showorder', showorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
 app.router.add_get('/s/chat', chatpage) 
 app.router.add_get('/fetchcomments', fetchcomments)
+app.router.add_get('/get_name_pic', id2name_pic)
 
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/savecomment', savecomment)
