@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/comment.css">
     <link rel="stylesheet" href="css/vx.css">
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.cookies.js"></script>
     <script>
         var chapter = {{chapter}};
         function randomString(len) {
@@ -80,7 +81,7 @@
         <!--评论区域 end-->
         <!--回复区域 begin-->
         <div class="comment-show">
-            <div class="comment-show-con clearfix">
+            <!--<div class="comment-show-con clearfix">
                 <div class="comment-show-con-img pull-left"><img src="imgs/header-img-comment_03.png" alt=""></div>
                 <div class="comment-show-con-list pull-left clearfix">
                     <div class="pl-text clearfix">
@@ -98,8 +99,8 @@
                     </div>
                     <div class="hf-list-con"></div>
                 </div>
-            </div>
-        </div>
+            </div>-->
+        </div> 
         <!--回复区域 end-->
     </div>
     
@@ -136,8 +137,8 @@
                 if(status=='success'){
                     for(var i=0;i<data.length;i++){
                         var datai = data[i];
-                        if(data[i]['father'] == chapter){
-                            oHtml = '<div id="'+datai['id']+'" class="comment-show-con clearfix"><div class="comment-show-con-img pull-left"><img src="imgs/header-img-comment_03.png" alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="#" class="comment-size-name">David Beckham : </a> <span class="my-pl-con">&nbsp;'+ datai['data'] +'</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+datai['time']+'</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="removeBlock">删除</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
+                        if(datai['father'] == chapter){
+                            oHtml = '<div id="'+datai['id']+'" class="comment-show-con clearfix"><div class="comment-show-con-img pull-left"><img src="'+datai['head_pic']+'" alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="#" class="comment-size-name">'+datai['author']+' : </a> <span class="my-pl-con">&nbsp;'+ datai['data'] +'</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+datai['time']+'</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
                             $('.plBtn').parents('.reviewArea ').siblings('.comment-show').prepend(oHtml);
                         }
                     }
@@ -146,7 +147,7 @@
                         var datai = data[i];
                         if(data[i]['father'] != chapter){                            
                             oAt = '回复<a href="#" class="atName">@'+datai.atwho+'</a> : '+datai.data;
-                            var oHtml = '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="#" class="comment-size-name">我的名字 : </a><span class="my-pl-con">'+oAt+'</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+datai['time']+'</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="removeBlock">删除</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">666</i>)</a> </div> </div></div>';
+                            var oHtml = '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="#" class="comment-size-name">'+datai['author']+' : </a><span class="my-pl-con">'+oAt+'</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+datai['time']+'</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div></div>';
                             //alert($('div#'+datai['id']).html());
                             $('div#'+datai['father']+' .hf-list-con').css('display','block').prepend(oHtml);
                             $('#'+datai['father']+' div.date-dz-right').find('.pl-hf').addClass('hf-con-block');
@@ -190,7 +191,7 @@
             var oSize = $(this).siblings('.flex-text-wrap').find('.comment-input').val();
             console.log(oSize);
             //动态创建评论模块
-            oHtml = '<div id="'+commentid+'" class="comment-show-con clearfix"><div class="comment-show-con-img pull-left"><img src="imgs/header-img-comment_03.png" alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="#" class="comment-size-name">David Beckham : </a> <span class="my-pl-con">&nbsp;'+ oSize +'</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+now+'</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="removeBlock">删除</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
+            oHtml = '<div id="'+commentid+'" class="comment-show-con clearfix"><div class="comment-show-con-img pull-left"><img src="'+login_pic+'" alt=""></div> <div class="comment-show-con-list pull-left clearfix"><div class="pl-text clearfix"> <a href="#" class="comment-size-name">'+login_name+' : </a> <span class="my-pl-con">&nbsp;'+ oSize +'</span> </div> <div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+now+'</span> <div class="date-dz-right pull-right comment-pl-block"><a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">0</i>)</a> </div> </div><div class="hf-list-con"></div></div> </div>';
             if(oSize.replace(/(^\s*)|(\s*$)/g, "") != ''){
                 $(this).parents('.reviewArea ').siblings('.comment-show').prepend(oHtml);
                 $(this).siblings('.flex-text-wrap').find('.comment-input').prop('value','').siblings('pre').find('span').text('');
@@ -202,8 +203,8 @@
                     level: 1,
                     atwho: 0,
                     time: now,
-                    author: '',
-                    head_pic: '',
+                    author: login_name,
+                    head_pic: login_pic,
                     vote:0
                 };
                 sentcomment(comment_data);
@@ -280,7 +281,7 @@
                 }else {
                     oAt = '回复<a href="#" class="atName">@'+data.atName+'</a> : '+data.hfContent;
                 }
-                var oHtml = '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="#" class="comment-size-name">我的名字 : </a><span class="my-pl-con">'+oAt+'</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+now+'</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="removeBlock">删除</a> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">666</i>)</a> </div> </div></div>';
+                var oHtml = '<div class="all-pl-con"><div class="pl-text hfpl-text clearfix"><a href="#" class="comment-size-name">'+login_name+' : </a><span class="my-pl-con">'+oAt+'</span></div><div class="date-dz"> <span class="date-dz-left pull-left comment-time">'+now+'</span> <div class="date-dz-right pull-right comment-pl-block"> <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block pull-left">回复</a> <span class="pull-left date-dz-line">|</span> <a href="javascript:;" class="date-dz-z pull-left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">666</i>)</a> </div> </div></div>';
                 oThis.parents('.hf-con').parents('.comment-show-con-list').find('.hf-list-con').css('display','block').prepend(oHtml) && oThis.parents('.hf-con').siblings('.date-dz-right').find('.pl-hf').addClass('hf-con-block') && oThis.parents('.hf-con').remove();
                 var comment_data = {
                     id: randomString(12),
@@ -290,8 +291,8 @@
                     level: 2,
                     atwho: data['atName'],
                     time: now,
-                    author: 0,
-                    head_pic: '',
+                    author: login_name,
+                    head_pic: login_pic,
                     vote:0
                 };
                 sentcomment(comment_data);
