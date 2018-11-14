@@ -1,0 +1,54 @@
+
+
+{% block body %}
+  <table border="1">
+    <tr>
+        <th>货币对</th>
+        <th>订单类型</th>
+        <th>执行价格</th>
+        <th>最大止损</th>
+        <th>容忍止损</th>
+        <th>止损时间</th>
+        <th>保守盈利</th>
+        <th>最大盈利</th>
+        <th>持有时长</th>
+        <th>事件依据</th>
+        <th>事件影响力评判</th>
+        <th>波动持续以及回撤评判</th>
+        <th>下单者当前是否深思过</th>
+        <th>列举3个持仓原因</th>
+        <th>试着列举三个不持仓原因</th>
+        <th>K线稳定性评分</th>
+        <th>市场情绪清晰性评分</th>
+        <th>风险评分</th>
+        <th>盈利大小评分</th>
+    </tr>
+{% for order in orders %}
+    <tr>
+        <td>{{order.symbol}}</td>
+        <td>{{order.ordertype}}</td>
+        <td>{{order.price}}</td>
+        <td>{{order.maxstoploss}}</td>
+        <td>{{order.tolerancestoloss}}</td>
+        <td>{{order.tolerancestotime}}</td>
+        <td>{{order.conservativeprofit}}</td>
+        <td>{{order.profit}}</td>
+        <td>{{order.duration}}</td>
+        <td>{{order.thebigthing}}</td>
+        <td>{{order.isworking}}</td>
+        <td>{{order.isinrange}}</td>
+        <td>{{order.isthinkover}}</td>
+        <td>{{order.threeyesreason}}</td>
+        <td>{{order.threenoreason}}</td>
+        <td>{{order.rate_kline}}</td>
+        <td>{{order.rate_direction}}</td>
+        <td>{{order.rate_risk}}</td>
+        <td>{{order.rate_profitable}}</td>
+        
+    </tr>    
+{% endfor %}
+    
+    </table>
+  
+  </ul>
+{% endblock %}

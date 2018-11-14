@@ -7,6 +7,7 @@ from mongodb import *
 from webname import *
 from head_pic import *
 import random
+import time
 
 """
 orderstruct = {   #json cell data deliver to mt4
@@ -39,6 +40,8 @@ orderinfo={
     orderid:
 }
 """
+Id_Vote={}
+Vote_Time=time.time()
 OrderList = []
 LastDealTime = datetime.today()
 ProfitDoubleTime = datetime.today()-timedelta(8)
@@ -87,8 +90,9 @@ async def showorder(request):
 async def savecomment(request):
     para = await request.post()
     para = dict(para)
+    para['vote'] = int(para['vote'])
     db_comments.insert(para)
-    print('yes')
+    # print('yes')
     return web.Response(text="ok")
 
 
@@ -108,7 +112,6 @@ async def confirm_direct(request):
         return web.Response(text="ok")
     else:
         return web.Response(text="nok")
-        pass
         
 async def parse_chatcontent(request):
     para = request.query
@@ -130,6 +133,28 @@ async def parse_chatcontent(request):
 async def fetchcomments(request):
     comments = list(db_comments.find({'chapter': request.query.get('chapter')}, projection={'_id':False}))
     return web.json_response(comments)
+
+async def votecomment(request):
+    para = await request.post()
+    theid=para.get('id')
+    thenum=int(para.get('num'))
+    global Id_Vote, Vote_Time
+    if time.time() - Vote_Time > 3600*24:
+        Vote_Time = time.time()
+        Id_Vote={}
+    if not Id_Vote.get(para['auth']):
+        Id_Vote[para['auth']] = 0
+    Id_Vote[para['auth']] = thenum + Id_Vote[para['auth']]
+    # print(theid,'  ',thenum)
+    if Id_Vote[para['auth']]>=10:
+        return web.Response(text="no")
+
+    if thenum>0:
+        db_comments.find_one_and_update({'id':theid},{'$inc':{'vote':1}})
+    else:
+        db_comments.find_one_and_update({'id':theid},{'$dec':{'vote':1}})
+    return web.Response(text="ok")
+
 
 async def id2name_pic(request):
     para = request.query
@@ -154,6 +179,7 @@ app.router.add_get('/get_name_pic', id2name_pic)
 app.router.add_post('/makeorder', makeorder)
 app.router.add_post('/savecomment', savecomment)
 app.router.add_post('/confirm_direct', confirm_direct)
+app.router.add_post('/votecomment', votecomment)
 
 app.router.add_static('/s/', path='./client', name='static')
 web.run_app(app)

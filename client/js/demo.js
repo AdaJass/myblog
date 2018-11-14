@@ -31,6 +31,16 @@ $(function() {
 			if(!init) $('#ratedirection').val(value);  // prevent run at init
 		},
 	});
+
+	$("#risk .ratyli").ratyli({
+		full:"<i class='fa fa-thumbs-up'></i>",
+		empty:"<i class='fa fa-thumbs-o-up'></i>",
+		onRated:function(value,init){
+			// rating callback
+			if(!init) $('#raterisk').val(value);  // prevent run at init
+		},
+	});
+
 	$("#profitability .ratyli").ratyli({
 		full:"<i class='fa fa-thumbs-up'></i>",
 		empty:"<i class='fa fa-thumbs-o-up'></i>",
@@ -75,3 +85,9 @@ $(function() {
 
 
 });
+
+[{"equitywhenstart": 0.0, "symbol": "AUDUSD", "tolerancestoloss": "", "previousordertime": "2018-11-14 13:11:08", 
+"isinrange": "", "rate_kline": "2", "previousorderid": 0, "duration": "", 
+"price": "", "isthinkover": "", "threenoreason": "", "orderid": 1, "rate_profitable": "1", 
+"thebigthing": "", "tolerancestotime": "", "threeyesreason": "", "rate_risk": "1", "profit": "", 
+"isworking": "", "maxstoploss": "", "rate_direction": "5"}]

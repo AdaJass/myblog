@@ -23,7 +23,7 @@
 </head>
 <body>
 	<div style="width:350px;margin:30px auto;">
-        <form action="/makeorder" method="post" class='form'>
+        <form action="/makeorder" onSubmit="return beforeSubmit(this);" method="post" class='form'>
         	<div style="font-size: 30px;font-weight: bold;text-align: center; margin-bottom: 32px;">orders</div>
 			<select class="form-control" name="symbol">
 				<option>EURUSD</option>
@@ -108,35 +108,35 @@
 			  </select>
 
 			  <label class="radio-inline" style="margin-top: 32px;">
-				<input type="radio" name="ordertype" id="inlineRadio1" value="BUY"> buy
+				<input type="radio" required="required" name="ordertype" id="inlineRadio1" value="BUY"> buy
 			  </label>
 			  <label class="radio-inline" style="margin-top: 32px;">
-				<input type="radio" name="ordertype" id="inlineRadio2" value="SELL"> sell
+				<input type="radio" required="required" name="ordertype" id="inlineRadio2" value="SELL"> sell
 			  </label>
 
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-gbp" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="price" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Order Direct Price">
+				<input type="text" required="required" name="price" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Order Direct Price">
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-piggy-bank" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="maxstoploss" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Max StopLoss" >
+				<input type="text" required="required" name="maxstoploss" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Max StopLoss" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-piggy-bank" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="tolerancestoloss" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Tolerance StopLoss" >
+				<input type="text" required="required" name="tolerancestoloss" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Tolerance StopLoss" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-dashboard" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="tolerancestotime" style="height:45px;border:0;width:297px;" placeholder="Tolerance StopTime" >
+				<input type="text" required="required" name="tolerancestotime" style="height:45px;border:0;width:297px;" placeholder="Tolerance StopTime" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-piggy-bank" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="profit" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Conservative Profit" >
+				<input type="text" required="required" name="conservativeprofit" onkeyup="value=value.replace(/[^.1234567890-]+/g,'')" style="height:45px;border:0;width:297px;" placeholder="Conservative Profit" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
@@ -146,41 +146,42 @@
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-dashboard" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="duration" style="height:45px;border:0;width:297px;" placeholder="Order Total Duration" >
+				<input type="text" name="duration" style="height:45px;border:0;width:297px;" placeholder="Order Total Duration /h" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-info-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="thebigthing" style="height:45px;border:0;width:297px;" placeholder="The Event That Rely On" >
+				<input type="text" required="required" name="thebigthing" style="height:45px;border:0;width:297px;" placeholder="The Event That Rely On" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="isworking" style="height:45px;border:0;width:297px;" placeholder="Is It The Fluctuation Time Out?" >
+				<input type="text" required="required" name="isworking" style="height:45px;border:0;width:297px;" placeholder="Is It The Fluctuation Time Out?" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="isinrange" style="height:45px;border:0;width:297px;" placeholder="Is It The Price Will Go On? Will It Draw Back?" >
+				<input type="text" required="required" name="isinrange" style="height:45px;border:0;width:297px;" placeholder="Is It The Price Will Go On? Will It Draw Back?" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>
 			<div style="height:45px;line-height:45px;background: #fff;width:350px;padding-left:15px;margin-top: 32px;position: relative;">
 				<span class="glyphicon glyphicon-question-sign" style="font-size:18px;vertical-align:middle;top:-3px;color: #999;"></span>&nbsp;&nbsp;&nbsp;
-				<input type="text" name="isthinkover" style="height:45px;border:0;width:297px;" placeholder="Are You Think It Over?" >
+				<input type="text" required="required" name="isthinkover" style="height:45px;border:0;width:297px;" placeholder="Are You Think It Over?" >
 				<span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span>
 			</div>			
 			<div style="height:90px;line-height:18px;background: #fff;width:350px;padding-left:0px;margin-top: 32px;position: relative;">
 				<!-- <span class="glyphicon glyphicon-thumbs-up" style="color: #999;"></span>&nbsp;&nbsp;&nbsp; -->
-				<textarea name="threeyesreason" style="height:90px;border:0;width:350px;" placeholder="List 3 Reasons Make You Said Yes" ></textarea>
+				<textarea name="threeyesreason" required="required" style="height:90px;border:0;width:350px;" placeholder="List 3 Reasons Make You Said Yes" ></textarea>
 				<!-- <span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span> -->
 			</div>
 			<div style="height:90px;line-height:18px;background: #fff;width:350px;padding-left:0px;margin-top: 32px;position: relative;">
 				<!-- <span class="glyphicon glyphicon-thumbs-down" style="color: #999;"></span>&nbsp;&nbsp;&nbsp; -->
-				<textarea name="threenoreason"  style="height:90px;border:0;width:350px;" placeholder="Try 3 Reasons Will Deny Youself" ></textarea>
+				<textarea name="threenoreason" required="required"  style="height:90px;border:0;width:350px;" placeholder="Try 3 Reasons Will Deny Youself" ></textarea>
 				<!-- <span style='position:absolute;right: 0;bottom:-37px;font-size:13px;color: #f00;'></span> -->
 			</div>
 			<input id="ratekline" name="rate_kline" hidden>
 			<input id="ratedirection" name="rate_direction" hidden>
+			<input id="raterisk" name="rate_risk" hidden>
 			<input id="rateprofitable" name="rate_profitable" hidden>
 			
 			<div id="kline" >
@@ -189,6 +190,11 @@
 			</div>
 			<div id="direction">
 				<h2>Emotion Direction Clearly</h2>
+				<span class="ratyli"></span>
+			</div>
+
+			<div id="risk">
+				<h2>Posibility Of Being Stop Out</h2>
 				<span class="ratyli"></span>
 			</div>
 
@@ -205,6 +211,31 @@
 	<script src="js/jquery.ratyli.js"></script>
     <script src="js/demo.js"></script>
     <script>
+		function beforeSubmit(form){
+			var check=1;
+			form.ordertype.value ? 1: ($("input[name='ordertype']").focus(),check=0);
+			if(!check) return false;
+			form.price.value? 1:($("input[name='price']").focus(),check=0);
+			if(!check) return false;
+			form.maxstoploss.value? 1:($("input[name='maxstoploss']").focus(),check=0);
+			if(!check) return false;
+			form.profit.value? 1:($("input[name='profit']").focus(),check=0);
+			if(!check) return false;
+			form.thebigthing.value? 1:($("input[name='thebigthing']").focus(),check=0);
+			if(!check) return false;
+			form.isworking.value? 1:($("input[name='isworking']").focus(),check=0);
+			if(!check) return false;
+			form.isinrange.value? 1:($("input[name='isinrange']").focus(),check=0);
+			if(!check) return false;
+			form.threeyesreason.value? 1:($("textarea[name='threeyesreason']").focus(),check=0);
+			if(!check) return false;
+			form.symbol.value? 1:($("input[name='symbol']").focus(),check=0);
+			if(!check) return false;
+			form.duration.value? 1:($("input[name='duration']").focus(),check=0);
+			if(!check) return false;
+			
+			return true;
+		}
 		$("input").blur(function() {
 			var v=$(this).val();
 			if (v=='') {
@@ -213,10 +244,11 @@
 				$(this).prev().css("color","#0EA74A");
 			} 
 		});
-		
-		$('.button').click(function(){		
+
+		$('.button').click(function(){
 			$('form').submit();
 		});
+		
 	</script>
 </body>
 </html>
