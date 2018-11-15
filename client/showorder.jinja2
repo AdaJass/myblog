@@ -22,6 +22,7 @@
         <th>市场情绪清晰性评分</th>
         <th>风险评分</th>
         <th>盈利大小评分</th>
+        <th>操作</th>
     </tr>
 {% for order in orders %}
     <tr>
@@ -44,7 +45,9 @@
         <td>{{order.rate_direction}}</td>
         <td>{{order.rate_risk}}</td>
         <td>{{order.rate_profitable}}</td>
-        
+        <td><a href="/makeorder?id={{order.orderid}}">修改&nbsp;&nbsp;</a>
+            <a href="/deleteorder?id={{order.orderid}}">删除</a>
+        </td>
     </tr>    
 {% endfor %}
     

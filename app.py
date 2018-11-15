@@ -66,25 +66,36 @@ async def makeorder(request):
     timenow = datetime.today()
     if timenow - ProfitDoubleTime < timedelta(7) or timenow - ProfitDoubleTime < timedelta(7):
         return web.Response(text="your mood are not good enough to deal! please calm down several days!")
-    orderstruct['orderid'] = len(OrderList)+1
+    orderstruct['orderid'] = str(len(OrderList)+1)
     OrderList.append(orderstruct)
-    print(orderstruct)
-    print(para)
+    # print(orderstruct)
+    # print(para)
     return web.HTTPFound('/showorder')
 
 async def deleteorder(request):
-    para = await request.post()
-    infoList = dict(para) 
-    # for orderstruct in OrderList:
+    para = request.query
+    # count the order profit infomation
+    for i,order in enumerate(OrderList):
+        if order['orderid'] == para.get('id'):
+            if i+1 < len(OrderList):
+                OrderList = OrderList[0:i] + OrderList[(i+1):]
+            else:
+                OrderList = OrderList[0:i]
+            
+            # database relate operation
+            
+    return web.HTTPFound('/showorder')
 
-
+@aiohttp_jinja2.template('showorder.jinja2')
 async def showorder(request):
-    print('showorder')
-    global orderstruct    
-    if len(OrderList)>0:        
-        return web.json_response(OrderList)
+    global OrderList
+    # print(OrderList)  
+    data={}  
+    data['orders'] = OrderList
+    if len(OrderList)>0:       
+        return data
     else:
-        return web.Response(text="no")
+        return 0
         pass
 
 async def savecomment(request):
@@ -103,6 +114,22 @@ async def chatpage(request):
     if para.get('chapter'):
         data['chapter'] = para.get('chapter')
     return data
+
+@aiohttp_jinja2.template('makeorder.jinja2')
+async def create_or_modify_order(request):
+    para = request.query
+    global OrderList
+    data={}
+    if not para.get('id'):
+        data['order'] = 0
+    else:
+        for order in OrderList:
+            print(order)
+            if order['orderid'] == para.get('id'):
+                data['order'] = order
+                break
+    return data
+
 
 async def confirm_direct(request):
     para = await request.post()
@@ -171,6 +198,7 @@ app = web.Application()
 aiohttp_jinja2.setup(app,
     loader=jinja2.FileSystemLoader('./client'))
 app.router.add_get('/showorder', showorder)
+app.router.add_get('/makeorder', create_or_modify_order)
 app.router.add_get('/chatcontent', parse_chatcontent)
 app.router.add_get('/s/chat', chatpage) 
 app.router.add_get('/fetchcomments', fetchcomments)
