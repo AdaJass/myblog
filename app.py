@@ -69,7 +69,7 @@ async def makeorder(request):
     orderstruct['orderid'] =  ''.join(random.sample(string.ascii_letters + string.digits, 10))
     orderstruct['orderstopprice'] = ''
     orderstruct['orderstopreason'] = ''
-    OrderList.append(orderstruct)
+    OrderList.append(orderstruct.copy())
     db_valid_order.insert(orderstruct)
     # print(orderstruct)
     # print(para)
@@ -78,6 +78,7 @@ async def makeorder(request):
 async def deleteorder(request):
     para = request.query
     # count the order profit infomation
+    global OrderList
     for i,order in enumerate(OrderList):
         if order['orderid'] == para.get('id'):
             if i+1 < len(OrderList):
@@ -196,6 +197,7 @@ aiohttp_jinja2.setup(app,
     loader=jinja2.FileSystemLoader('./client'))
 app.router.add_get('/showorder', showorder)
 app.router.add_get('/makeorder', create_or_modify_order)
+app.router.add_get('/deleteorder', deleteorder)
 app.router.add_get('/chatcontent', parse_chatcontent)
 app.router.add_get('/s/chat', chatpage) 
 app.router.add_get('/fetchcomments', fetchcomments)
