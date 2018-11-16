@@ -6,7 +6,7 @@ from datetime import timedelta
 from mongodb import *
 from webname import *
 from head_pic import *
-import random
+import random, string
 import time
 
 """
@@ -64,10 +64,13 @@ async def makeorder(request):
     if len(pairlist) > 2:
         return web.Response(text="too many intention! deal not allow!!!")
     timenow = datetime.today()
-    if timenow - ProfitDoubleTime < timedelta(7) or timenow - ProfitDoubleTime < timedelta(7):
+    if timenow - ProfitDoubleTime < timedelta(4) or timenow - EquityCutOffTime < timedelta(7):
         return web.Response(text="your mood are not good enough to deal! please calm down several days!")
-    orderstruct['orderid'] = str(len(OrderList)+1)
+    orderstruct['orderid'] =  ''.join(random.sample(string.ascii_letters + string.digits, 10))
+    orderstruct['orderstopprice'] = ''
+    orderstruct['orderstopreason'] = ''
     OrderList.append(orderstruct)
+    db_valid_order.insert(orderstruct)
     # print(orderstruct)
     # print(para)
     return web.HTTPFound('/showorder')
@@ -81,9 +84,7 @@ async def deleteorder(request):
                 OrderList = OrderList[0:i] + OrderList[(i+1):]
             else:
                 OrderList = OrderList[0:i]
-            
-            # database relate operation
-            
+            db_valid_order.find_one_and_update({'orderid':para.get('id')},{'$set':{'orderstopprice':  (para.get('stopprice') or ''), 'orderstopreason': (para.get('stopreason') or '')}})
     return web.HTTPFound('/showorder')
 
 @aiohttp_jinja2.template('showorder.jinja2')
@@ -92,11 +93,7 @@ async def showorder(request):
     # print(OrderList)  
     data={}  
     data['orders'] = OrderList
-    if len(OrderList)>0:       
-        return data
-    else:
-        return 0
-        pass
+    return data
 
 async def savecomment(request):
     para = await request.post()

@@ -1,7 +1,17 @@
-
-
-{% block body %}
-  <table border="1">
+<!doctype html>
+<html class="no-js" lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>订单展示</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="stylesheet" type="text/css" href="/s/css/bootstrap.min.css">
+       
+    </head>
+<body>
+  <table border="1" class="table table-hover">
     <tr>
         <th>货币对</th>
         <th>订单类型</th>
@@ -46,12 +56,10 @@
         <td>{{order.rate_risk}}</td>
         <td>{{order.rate_profitable}}</td>
         <td><a href="/makeorder?id={{order.orderid}}">修改&nbsp;&nbsp;</a>
-            <a href="/deleteorder?id={{order.orderid}}">删除</a>
+            <a href="/deleteorder?id={{order.orderid}}&reason=网页主动删除">删除</a>
         </td>
     </tr>    
-{% endfor %}
-    
-    </table>
-  
-  </ul>
-{% endblock %}
+{% endfor %}    
+    </table>  
+ </body>
+ </html>
