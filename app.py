@@ -209,4 +209,4 @@ app.router.add_post('/confirm_direct', confirm_direct)
 app.router.add_post('/votecomment', votecomment)
 
 app.router.add_static('/s/', path='./client', name='static')
-web.run_app(app)
+web.run_app(app,port=80)
