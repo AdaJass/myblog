@@ -30,6 +30,8 @@ struct ORDER{
    double conservativetime;
 };
 ORDER Orders[30];
+ORDER PreOrders[30];
+int PreOrdersLen=0;
 int OrdersLen=0;
 
 string GetWebString(const string url){
@@ -104,7 +106,14 @@ void OnDeinit(const int reason){
 void OnTick()
 {
 //---
-   
+    for(int i=0;i<PreOrdersLen;i++){
+        for(int j=0;j<OrdersTotal();j++){
+            if(OrderSelect(j,SELECT_BY_POS)==true&&OrderMagicNumber()==PreOrders[i].orderid){
+                //here modify the order
+                //if stop the order, should make a order info send to server.
+            } 
+        }
+    }
 }
 //+------------------------------------------------------------------+
 //| Timer function                                                   |
@@ -113,7 +122,30 @@ void OnTimer()
 {
 //---
     FillOrdersFromWebSever();
-    //deal or stop here
-    
+    bool isshow=false;
+    for(int ii=0;ii<OrdersLen;ii++){
+        isshow=false;
+        for(int jj=0;jj<PreOrdersLen;jj++){
+            if(Orders[ii].orderid==PreOrders[jj].orderid){
+                isshow=true;
+            }
+        }
+        if(!isshow){
+            //deal here
+        }
+    }
+    for(int ii=0;ii<PreOrdersLen;ii++){
+        isshow=false;
+        for(int jj=0;jj<OrdersLen;jj++){
+            if(Orders[jj].orderid==PreOrders[ii].orderid){
+                isshow=true;
+            }
+        }
+        if(!isshow){
+            //stop deal here
+        }
+    }
+    PreOrders=Orders;
+    PreOrdersLen=OrdersLen;
 }
 //+------------------------------------------------------------------+
