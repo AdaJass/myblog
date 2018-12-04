@@ -23,6 +23,7 @@ input int StopLoss         = 170;
 input double Tanh          = 3;
 input int StandarHighLimit = 20;
 input int StandarLowLimit = 1;
+input int CheckLength     =8;
 
 int bars=0;
 
@@ -58,14 +59,14 @@ void CheckForOpen(){
            return;
     }
     
-    
+    double sumbd=0.0;
     for(int i=0;i<6;i++){    
         slowma[i] = iMA(NULL,0,SlowMV,0,MODE_EMA,PRICE_CLOSE,i+1);
         fastma[i] = iMA(NULL,0,FastMV,0,MODE_EMA,PRICE_CLOSE,i+1);
-        body[i] = iBody(i+1);        
+        body[i] = iBody(i+1);   
+        sumbd +=body[i];   
     }    
-    if(fastma[0]>slowma[0]&&fastma[1]>=slowma[1]&&fastma[5]<slowma[5]){
-        double sumbd=body[0]+body[1]+body[2]+body[3]+body[4]+body[5];
+    if(fastma[0]>slowma[0]&&fastma[4]>slowma[4]&&fastma[CheckLength-2]>slowma[CheckLength-2]&&fastma[CheckLength-1]<slowma[CheckLength-1]){        
         //Print("~");  
         //Print("bd regression ",_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));      
         if(sumbd>CANDLE_STANDARD*StandarLowLimit&&sumbd<CANDLE_STANDARD*50&&MathAbs(_Relative(body))>Relative&&-100000*_Regression(fastma)>=Tanh){
@@ -76,9 +77,8 @@ void CheckForOpen(){
             }            
         }
     }
-    if(fastma[0]<slowma[0]&&fastma[1]<=slowma[1]&&fastma[5]>slowma[5]){
-        //Print("~");         
-        double sumbd=body[0]+body[1]+body[2]+body[3]+body[4]+body[5];
+    if(fastma[0]<slowma[0]&&fastma[4]<slowma[4]&&fastma[CheckLength-2]<slowma[CheckLength-2]&&fastma[CheckLength-1]>=slowma[CheckLength-1]){
+        //Print("~");          
         //Print("bd regression ",_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));  
         if(-sumbd>CANDLE_STANDARD*StandarLowLimit&&-sumbd<CANDLE_STANDARD*StandarHighLimit&&MathAbs(_Relative(body))>Relative&&-100000*_Regression(fastma)<=-Tanh){
             Print("bd regression ",-100000*_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));
