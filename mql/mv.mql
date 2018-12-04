@@ -1,0 +1,155 @@
+//+------------------------------------------------------------------+
+//|                                                           MV.mq4 |
+//|                        Copyright 2018, MetaQuotes Software Corp. |
+//|                                             https://www.mql5.com |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2018, MetaQuotes Software Corp."
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+#property strict
+
+#define MAGICMA  20181204
+
+#include "../include/CandleShape.mqh"
+#include "../include/PublicStuff.mqh"
+
+input double Lots          = 0.1;
+input int  SlowMV          = 20;
+input int  FastMV          = 5;
+input double Relative      = 0.37;
+input int StartTime        = 5;
+input int StopTime         = 16;
+input int StopLoss         = 170;
+input double Tanh          = 3;
+input int StandarHighLimit = 20;
+input int StandarLowLimit = 1;
+
+int bars=0;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int CalculateCurrentOrders(string symbol)
+{
+   int buys=0,sells=0;
+//---
+   for(int i=0;i<OrdersTotal();i++)
+     {
+      if(OrderSelect(i,SELECT_BY_POS,MODE_TRADES)==false) break;
+      if(OrderSymbol()==Symbol() && OrderMagicNumber()==MAGICMA)
+        {
+         if(OrderType()==OP_BUY)  buys++;
+         if(OrderType()==OP_SELL) sells++;
+        }
+     }
+//--- return orders volume
+   if(buys>0) return(buys);
+   else       return(-sells);
+}
+
+void CheckForOpen(){    
+    double slowma[6];
+    double fastma[6];
+    double body[6]; 
+    
+   if(OrderSelect(HistoryTotal()-1,SELECT_BY_POS,MODE_HISTORY)){ 
+       //Print(TimeDay(OrderCloseTime())," order&current ",TimeDay(TimeCurrent())) ;     
+       if(TimeDay(OrderOpenTime())==TimeDay(TimeCurrent()))
+           return;
+    }
+    
+    
+    for(int i=0;i<6;i++){    
+        slowma[i] = iMA(NULL,0,SlowMV,0,MODE_EMA,PRICE_CLOSE,i+1);
+        fastma[i] = iMA(NULL,0,FastMV,0,MODE_EMA,PRICE_CLOSE,i+1);
+        body[i] = iBody(i+1);        
+    }    
+    if(fastma[0]>slowma[0]&&fastma[1]>=slowma[1]&&fastma[5]<slowma[5]){
+        double sumbd=body[0]+body[1]+body[2]+body[3]+body[4]+body[5];
+        //Print("~");  
+        //Print("bd regression ",_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));      
+        if(sumbd>CANDLE_STANDARD*StandarLowLimit&&sumbd<CANDLE_STANDARD*50&&MathAbs(_Relative(body))>Relative&&-100000*_Regression(fastma)>=Tanh){
+            Print("bd regression ",-100000*_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));
+            if(TimeHour(iTime(0,0,0))>=StartTime&&TimeHour(iTime(0,0,0))<=StopTime)
+            {
+                OrderSend(Symbol(),OP_BUY,Lots,Ask,3,Ask-StopLoss*Point,0,"",MAGICMA,0,Blue);
+            }            
+        }
+    }
+    if(fastma[0]<slowma[0]&&fastma[1]<=slowma[1]&&fastma[5]>slowma[5]){
+        //Print("~");         
+        double sumbd=body[0]+body[1]+body[2]+body[3]+body[4]+body[5];
+        //Print("bd regression ",_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));  
+        if(-sumbd>CANDLE_STANDARD*StandarLowLimit&&-sumbd<CANDLE_STANDARD*StandarHighLimit&&MathAbs(_Relative(body))>Relative&&-100000*_Regression(fastma)<=-Tanh){
+            Print("bd regression ",-100000*_Regression(fastma),"  sum of body is: ",sumbd," Relative: ",_Relative(body));
+            if(TimeHour(iTime(0,0,0))>=StartTime&&TimeHour(iTime(0,0,0))<=StopTime)
+            {
+                OrderSend(Symbol(),OP_SELL,Lots,Bid,3,Bid+StopLoss*Point,0,"",MAGICMA,0,Red);
+            }            
+        }
+    }
+}
+
+void CheckForClose(){    
+    double slowma[6];
+    double fastma[6];
+    double body[6];
+    for(int i=0;i<6;i++){    
+        slowma[i] = iMA(NULL,0,SlowMV,0,MODE_EMA,PRICE_CLOSE,i+1);
+        fastma[i] = iMA(NULL,0,FastMV,0,MODE_EMA,PRICE_CLOSE,i+1);
+        body[i] = iBody(i+1);        
+    }
+    for(int i=0;i<OrdersTotal();i++)
+    {
+      if(OrderSelect(i,SELECT_BY_POS,MODE_TRADES)==false) break;
+      if(OrderSymbol()!=Symbol()) continue;
+      //--- check order type 
+      if(OrderType()==OP_BUY)
+        {
+         if(IsThreeDark(1)||fastma[0]<slowma[1])
+           {
+            if(!OrderClose(OrderTicket(),OrderLots(),Bid,3,White))
+               Print("OrderClose error ",GetLastError());
+           }
+         break;
+        }
+      if(OrderType()==OP_SELL)
+        {
+         if(IsThreeWhite(1)||fastma[0]>slowma[1])
+           {
+            if(!OrderClose(OrderTicket(),OrderLots(),Ask,3,White))
+               Print("OrderClose error ",GetLastError());
+           }
+         break;
+        }
+    }
+}
+
+int OnInit()
+{
+//---
+    bars = iBars(NULL,0);
+   
+//---
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+//--- 
+    if(iBars(NULL,0)>bars)
+        initialization(0);
+       
+    if(Bars<100 || IsTradeAllowed()==false){
+        Print("trade not allow");
+        return;
+    }
+//--- calculate open orders by current symbol
+   if(CalculateCurrentOrders(Symbol())==0) CheckForOpen();
+   else                                    CheckForClose();
+   bars = iBars(NULL,0);
+}
+//+------------------------------------------------------------------+
