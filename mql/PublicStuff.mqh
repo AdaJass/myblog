@@ -41,15 +41,17 @@ void initialization(int star_index)  //calculate the standard high of a candle.
    }
    
    CANDLE_STANDARD=sum/200;
+   //Print("The candle standard is: ",CANDLE_STANDARD);
 }
 
 
 
-double _Regression(double &data[])  //return the gradient
+double _Regression(double &data[],int count=0)  //return the gradient
 {
    double pivot=data[0];
    double sum=0.0;
-   int count=ArraySize(data);  
+   if(count==0)
+       count=ArraySize(data);  
    for(int i=0;i<count;i++)
    {      
       sum+=data[i];
@@ -65,11 +67,12 @@ double _Regression(double &data[])  //return the gradient
    return numerator/denominator;
 }
 
-double _Regression(double &datax[],double &datay[])  //return the gradient
+double _Regression(double &datax[],double &datay[],int count=0)  //return the gradient
 {
    
    double sumy=0.0,sumx=0.0;
-   int count=ArraySize(datay);  
+   if(count==0)
+       count=ArraySize(datax); 
    for(int i=0;i<count;i++)
    {      
       sumy+=datay[i];
@@ -90,11 +93,14 @@ double _Regression(double &datax[],double &datay[])  //return the gradient
 }
 
 
-double _Relative(double &data[]) //return the correlation coefficient
+double _Relative(double &data[], int count=0) //return the correlation coefficient
 {
    double pivot=data[0];
    double sum=0.0; 
-   int count=ArraySize(data); 
+   if(count==0)
+       count=ArraySize(data); 
+   
+   
    for(int i=0;i<count;i++)
    {      
       sum+=data[i];
